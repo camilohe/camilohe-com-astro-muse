@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Home">
+  <section class="hero">
+    <h1>Camilo Estevez</h1>
+    <p class="tagline">Software Engineer · Ottawa, ON, Canada</p>
+    <p>
+      I build software, automate everything I can, and occasionally teach people
+      how to do the same. These days I work mostly in C#, Rust, PowerShell and Go.
+      Former network/systems administrator, former math and computer-science teacher.
+    </p>
+    <div class="btn-row">
+      <a class="btn" href="https://github.com/camilohe">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/camilohe">LinkedIn</a>
+      <a class="btn" href="https://stackoverflow.com/users/380233/camilo-estevez">Stack Overflow</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Latest posts</h2>
+    {
+      posts.length === 0 ? (
+        <p class="meta">No posts yet — check back soon.</p>
+      ) : (
+        <ul class="post-list">
+          {posts.map((post) => (
+            <li>
+              <h3><a href={`/blog/${post.id.replace(/\.md$/, '')}/`}>{post.data.title}</a></h3>
+              <p class="meta">
+                {post.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+              <p>{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p><a href="/blog">All posts →</a></p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    name: 'rustup.install',
+    url: 'https://github.com/camilohe/rustup.install',
+    lang: 'PowerShell',
+    blurb: 'Chocolatey package to install rustup, the Rust toolchain installer, on Windows.',
+  },
+  {
+    name: 'berrybrew.install',
+    url: 'https://github.com/camilohe/berrybrew.install',
+    lang: 'PowerShell',
+    blurb: 'Chocolatey package for berrybrew, the "perlbrew for Windows" that manages multiple Perl installs.',
+  },
+  {
+    name: 'cursor.install',
+    url: 'https://github.com/camilohe/cursor.install',
+    lang: 'PowerShell',
+    blurb: 'Chocolatey package to install Cursor, the AI-first code editor.',
+  },
+  {
+    name: 'fixproj',
+    url: 'https://github.com/camilohe/fixproj',
+    lang: 'C#',
+    blurb: 'Tool that performs cleanups and normalizations on Visual Studio .csproj files to reduce spurious merge conflicts.',
+  },
+  {
+    name: 'PowerShellScripts',
+    url: 'https://github.com/camilohe/PowerShellScripts',
+    lang: 'PowerShell',
+    blurb: 'A collection of useful cross-platform PowerShell scripts, mostly for .NET developers.',
+  },
+  {
+    name: 'speedtest-rs',
+    url: 'https://github.com/camilohe/speedtest-rs',
+    lang: 'Rust',
+    blurb: 'Rust backend for LibreSpeed, the self-hosted HTML5 speed test.',
+  },
+];
+---
+
+<BaseLayout title="Projects" description="Open-source projects by Camilo Estevez — Chocolatey packages, C#, Rust, PowerShell.">
+  <h1>Projects</h1>
+  <p>
+    A selection of my open-source work. I maintain several
+    <a href="https://community.chocolatey.org/">Chocolatey</a> packages for the Windows
+    ecosystem, plus tools in C#, Rust and PowerShell. Find everything on
+    <a href="https://github.com/camilohe">GitHub</a>.
+  </p>
+  {projects.map((p) => (
+    <div class="card">
+      <h3><a href={p.url}>{p.name}</a></h3>
+      <p class="meta">{p.lang}</p>
+      <p>{p.blurb}</p>
+    </div>
+  ))}
+
+  <h2>Stack Overflow</h2>
+  <p>
+    I answer questions on <a href="https://stackoverflow.com/users/380233/camilo-estevez">Stack Overflow</a>
+    (user 380233) — 20 answers so far, reaching roughly 475k readers. Top tags:
+    git, windows, ssh, vagrant, virtualbox, usb-drive, c#.
+  </p>
+</BaseLayout>

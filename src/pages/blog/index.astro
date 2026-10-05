@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) => d.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title="Blog" description="Blog posts by Camilo Estevez — notes, TILs and longer write-ups.">
+  <h1>Blog</h1>
+  <p>Notes, TILs and longer write-ups. Short for <a href="/tags/til/">#til</a>? Start there.</p>
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <h3><a href={`/blog/${post.id.replace(/\.md$/, '')}/`}>{post.data.title}</a></h3>
+        <p class="meta">{fmt(post.data.date)}</p>
+        <p>{post.data.description}</p>
+        <p>
+          {post.data.tags.map((tag) => (
+            <a class="tag" href={`/tags/${tag}/`}>#{tag}</a>
+          ))}
+        </p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
