@@ -1,7 +1,7 @@
 # camilohe.com
 
 Personal website and blog for Camilo Estevez, built with [Astro](https://astro.build/).
-Static output — deploys as plain files to Cloudflare Pages.
+Static output — deploys as static assets on a Cloudflare Worker.
 
 ## Local development
 
@@ -13,19 +13,25 @@ npm run dev      # dev server with hot reload
 npm run build    # production build -> dist/
 ```
 
-## Deploying to Cloudflare Pages
+## Deploying with Workers Builds
 
-1. Push this repo to GitHub.
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, select this repo.
-3. Set these build settings:
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist/`
-   - **Node.js version:** picked up automatically from `.nvmrc` (22)
-4. Under **Custom domains**, add `www.camilohe.com` (DNS is already on Cloudflare,
-   so the record is created automatically with free SSL).
+`wrangler.jsonc` serves the Astro build in `dist/` as Worker static assets. There is
+no Worker script and no Cloudflare adapter. Do not attach `www.camilohe.com` here;
+that custom domain comes later.
 
-Every push to `main` rebuilds and redeploys automatically. Preview deployments are
-created for pull requests.
+In the Cloudflare dashboard, connect this GitHub repo with **Workers Builds**
+(Workers & Pages, not Pages). Use these settings:
+
+- **Production branch:** `main`
+- **Build command:** `npm run build`
+- **Deploy command:** `npx wrangler deploy`
+- **Preview command** (non-production branches): `npx wrangler versions upload`
+- **Root directory:** `/` (repository root)
+- **Build variable:** `NODE_VERSION` = `22` (matches `.nvmrc`; the build image defaults to Node 24)
+
+Pushes to `main` build and deploy. Pushes to other branches upload a version and
+do not replace production. Unknown URLs return a plain 404 (`not_found_handling`
+is `"none"`): there is no `src/pages/404.astro`, so no `404.html` is built.
 
 ## Security updates
 
@@ -78,8 +84,7 @@ work on it. Flip to `false` (or remove the line) when it's ready.
 ### Updating
 
 Edit the file (or `src/pages/about.astro`, `src/pages/projects.astro` for the
-static pages), commit, and push. Cloudflare Pages rebuilds automatically — live
-in about a minute.
+static pages), commit, and push. Workers Builds redeploys from `main` automatically.
 
 ### Tags
 

@@ -1,0 +1,19 @@
+{
+  "name": "camilohe-com-astro-muse",
+  // Date this Worker was added. Advance deliberately; compatibility dates change runtime defaults.
+  "compatibility_date": "2026-11-09",
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  },
+  "assets": {
+    // Astro's static build. No "main": pages are pre-rendered, so no Worker script runs.
+    "directory": "./dist",
+    // No src/pages/404.astro, so the build has no 404.html for "404-page" to serve.
+    // "single-page-application" would return the homepage with 200 for unknown URLs.
+    // "none" returns a plain 404, which matches this multi-page static site.
+    "not_found_handling": "none"
+  }
+}
